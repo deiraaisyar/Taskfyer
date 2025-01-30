@@ -5,7 +5,7 @@ interface Task {
   status: string;
   completed: boolean;
   dueDate: string;
-  prioriy: string; // typo dari be nya
+  priority: string;
   createdAt: string;
   updatedAt: string;
 }
