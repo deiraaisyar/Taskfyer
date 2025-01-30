@@ -4,8 +4,6 @@ import cors from "cors";
 import connect from "./src/db/connect.js";
 import cookieParser from "cookie-parser";
 import fs from "node:fs";
-import path from "path";
-import { fileURLToPath } from "url";
 import errorHandler from "./src/helpers/errorhandler.js";
 
 dotenv.config();
@@ -14,7 +12,7 @@ const port = process.env.PORT || 8000;
 
 const app = express();
 
-// Middleware
+// middleware
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
@@ -25,32 +23,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Error handler middleware
+// error handler middleware
 app.use(errorHandler);
 
-// Path absolute agar kompatibel dengan Vercel
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const routePath = path.join(__dirname, "src/routes");
-
-// Cek apakah folder routes ada sebelum membacanya
-if (!fs.existsSync(routePath)) {
-  console.error("❌ ERROR: Folder 'src/routes' tidak ditemukan.");
-  console.error("📂 Current Directory:", __dirname);
-  console.error("📂 Expected Path:", routePath);
-  process.exit(1);
-}
-
-// Load routes secara dinamis
-const routeFiles = fs.readdirSync(routePath);
+//routes
+const routeFiles = fs.readdirSync("./src/routes");
 
 routeFiles.forEach((file) => {
-  import(`file://${path.join(routePath, file)}`)
+  // use dynamic import
+  import(`./src/routes/${file}`)
     .then((route) => {
       app.use("/api/v1", route.default);
     })
     .catch((err) => {
-      console.error(`❌ Failed to load route file ${file}:`, err);
+      console.log("Failed to load route file", err);
     });
 });
 
@@ -59,10 +45,10 @@ const server = async () => {
     await connect();
 
     app.listen(port, () => {
-      console.log(`✅ Server is running on port ${port}`);
+      console.log(`Server is running on port ${port}`);
     });
   } catch (error) {
-    console.error("❌ Failed to start server:", error.message);
+    console.log("Failed to strt server.....", error.message);
     process.exit(1);
   }
 };
