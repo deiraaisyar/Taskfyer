@@ -4,6 +4,7 @@ import IconDeleteAll from "@/public/icons/IconDeleteAll";
 import IconFileCheck from "@/public/icons/IconFileCheck";
 import IconGrid from "@/public/icons/IconGrid";
 import IconStopwatch from "@/public/icons/IconStopwatch";
+import { github } from "@/utils/Icons";
 import { link } from "fs";
 import Image from "next/image";
 import Link from "next/link";
@@ -60,8 +61,18 @@ function MiniSidebar() {
         </ul>
 
         <div className="mb-[1.5rem]">
-          <button className="w-12 h-12 flex justify-center items-center border-2 border-[#EB4E31]  p-2 rounded-full">
-            <IconDeleteAll strokeColor="#EB4E31" />
+          <button className="w-12 h-12 flex justify-center items-center border-2 border-gray-700  p-2 rounded-full">
+            <div className="flex gap-4 items-center">
+              <Link
+                href="https://github.com/rifaset123/Taskfyer"
+                passHref
+                target="_blank"
+                rel="noopener noreferrer"
+                className="h-[40px] w-[40px] text-purple-500 rounded-full flex items-center justify-center text-lg border-2 border-[#E6E6E6]"
+              >
+                {github}
+              </Link>
+            </div>
           </button>
         </div>
       </div>
