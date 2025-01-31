@@ -1,10 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import connect from "./src/db/connect.js";
+import connect from "./backend/src/db/connect.js";
 import cookieParser from "cookie-parser";
 import fs from "node:fs";
-import errorHandler from "./src/helpers/errorhandler.js";
+import errorHandler from "./backend/src/helpers/errorhandler.js";
 
 dotenv.config();
 
@@ -27,11 +27,11 @@ app.use(cookieParser());
 app.use(errorHandler);
 
 //routes
-const routeFiles = fs.readdirSync("./src/routes");
+const routeFiles = fs.readdirSync("./backend/src/routes");
 
 routeFiles.forEach((file) => {
   // use dynamic import
-  import(`./src/routes/${file}`)
+  import(`./backend/src/routes/${file}`)
     .then((route) => {
       app.use("/api/v1", route.default);
     })
